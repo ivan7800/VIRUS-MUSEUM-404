@@ -1,18 +1,21 @@
-name: QA and Deploy GitHub Pages
+name: VIRUS MUSEUM 404 - QA
 on:
   push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
     branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  test:
+  quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,34 +24,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Syntax and logical tests
+      - name: JavaScript and Python checks
+        shell: bash
         run: |
           set -euo pipefail
           for file in assets/js/*.js; do node --check "$file"; done
           for test in tests/*.mjs; do node "$test"; done
-          python3 -m py_compile servidor.py tests/*.py
-          python3 tests/repository_integrity.py
-      - name: Browser smoke tests (Chromium)
+          python -m py_compile servidor.py tests/*.py
+          python tests/repository_integrity.py
+      - name: Browser integration (real HTTP + Chromium)
+        shell: bash
         run: |
-          python3 -m pip install playwright
-          python3 -m playwright install --with-deps chromium
-          python3 tests/browser_http_smoke.py
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - name: Assemble static-only Pages payload
-        run: |
-          mkdir -p site
-          cp index.html LICENSE site/
-          cp -R assets site/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          python -m pip install --disable-pip-version-check playwright
+          python -m playwright install --with-deps chromium
+          python tests/browser_http_smoke.py
