@@ -10,6 +10,8 @@ function elem(tag,cls,value){const e=document.createElement(tag);if(cls)e.classN
 export function initEraExperience(){
  const root=document.getElementById('eraExperience'), selector=document.getElementById('mosEra');
  if(!root||!selector)return;
+ const launch=document.getElementById('eraLaunch');
+ launch?.addEventListener('click',()=>{const hide=!root.hidden;root.hidden=hide;launch.setAttribute('aria-expanded',String(!hide));if(!hide)root.scrollIntoView({behavior:'smooth',block:'nearest'});});
  let choice=-1,inspected=new Set(),current='';
  const progress=()=>{try{return JSON.parse(localStorage.getItem('vm404:era-progress')||'{}')}catch{return {}}};
  const save=(p)=>{try{localStorage.setItem('vm404:era-progress',JSON.stringify(p))}catch{}};
@@ -53,6 +55,6 @@ export function initEraExperience(){
   const foot=elem('p','era-disclaimer','SIMULACIÓN EDUCATIVA · DATOS, ARCHIVOS Y RED TOTALMENTE FICTICIOS');
   root.append(head,badge,terminal,step,actions,result,restart,foot);
  }
- selector.addEventListener('change',render);
+ selector.addEventListener('change',()=>{render();root.hidden=false;if(launch)launch.setAttribute('aria-expanded','true');});
  render();
 }
