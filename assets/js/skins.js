@@ -27,7 +27,20 @@ export function initSkins(){
   };
   applyMuseum(stored('vm404:skin',museumSkins,'archive'));
   applyEra(stored('museumos-theme',eras,'classic'));
-  museum.addEventListener('change',()=>applyMuseum(museum.value));
+  const trigger=document.getElementById('openSkinPanel');
+  const panel=document.getElementById('skinPanel');
+  const setOpen=open=>{
+    panel.classList.toggle('skin-open',open);
+    trigger?.setAttribute('aria-expanded',String(open));
+  };
+  trigger?.addEventListener('click',()=>{
+    setOpen(!panel.classList.contains('skin-open'));
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false);});
+  document.addEventListener('pointerdown',e=>{
+    if(panel.classList.contains('skin-open')&&!panel.contains(e.target)&&!trigger?.contains(e.target))setOpen(false);
+  });
+  museum.addEventListener('change',()=>{applyMuseum(museum.value);setOpen(false);});
   era.addEventListener('change',()=>applyEra(era.value));
   // Keep exterior selector in sync when changing a skin inside MuseumOS settings.
   os.addEventListener('click',()=>queueMicrotask(()=>{
