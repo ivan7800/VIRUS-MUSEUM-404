@@ -1,65 +1,82 @@
 # VIRUS MUSEUM 404
 
-Museo web interactivo sobre la historia del malware, con fichas históricas, simulaciones visuales y un escritorio ficticio para aprender conceptos de seguridad. **No incluye malware real ni ejecuta acciones sobre el equipo.**
+Museo interactivo **educativo y seguro** de la historia del malware. Incluye 30 fichas históricas, demostraciones visuales y **MuseumOS**, un escritorio ficticio con aplicaciones, investigaciones y cuatro épocas recreadas. No contiene ni ejecuta malware real.
 
-Aplicación estática HTML, CSS y JavaScript, sin backend, cuentas, telemetría ni recursos remotos necesarios. Puede ejecutarse localmente o publicarse gratis con GitHub Pages.
+## Qué encontrarás
 
-## Ejecutar en local
+- **Archivo histórico**: 30 amenazas representativas con cronología y explicaciones.
+- **MuseumOS**: escritorio ficticio con Explorador, Procesos, Eventos, NetWatch, Centro de seguridad, correo, terminal y más.
+- **Living History 3.5**: investigaciones de DOS (1988), Windows 98 (1999), Windows XP (2003) y centro de respuesta (2017).
+- **Simulaciones con estado**: las pistas, la reproducción y las decisiones generan un informe virtual, procesos didácticos, eventos, avisos de red y señales en el Centro de seguridad.
+- **Temas**: Archivo 404, Matrix Terminal, Ámbar CRT, Laboratorio Polar y Noir Violeta. Cambia el tema con el botón **🎨 SKINS**. MuseumOS tiene además cuatro apariencias de época.
+- **Sin servidor de datos**: HTML, CSS y módulos JavaScript locales, sin cuentas, telemetría ni peticiones a servicios externos.
 
-Necesitas Python 3. El servidor escucha únicamente en `127.0.0.1` y usa un puerto libre.
+### Jugar una investigación
+
+1. Entra en **MuseumOS 404**, elige una época y enciende el ordenador virtual.
+2. Abre el **Panel del incidente** desde la parte superior derecha del escritorio.
+3. Usa **Reproducir / Pausar / Paso siguiente / Reiniciar** para inspeccionar la escena.
+4. Abre las **tres pistas** de la investigación histórica y toma una decisión.
+5. Abre **Archivos**, **Procesos**, **NetWatch**, **Eventos** o **Seguridad** para ver el resultado *exclusivamente simulado*. El informe generado es de solo lectura. **Restaurar** vuelve al estado limpio.
+
+Las investigaciones usan datos inventados con fines didácticos, y sus resultados no equivalen a análisis reales de malware o redes.
+
+## Ejecutar localmente
+
+Python 3 es suficiente. El servidor escucha solo en `127.0.0.1` y utiliza un puerto libre.
 
 - **Windows:** doble clic en `INICIAR-WINDOWS.bat`.
-- **Linux Mint:** ejecuta `bash INICIAR-LINUX.sh` desde la carpeta extraída.
+- **Linux Mint:** ejecuta `bash INICIAR-LINUX.sh`.
+- Alternativamente: `python3 servidor.py`.
 
-También puedes abrir `index.html` en un navegador moderno. Si el navegador limita módulos JavaScript en `file://`, usa uno de los lanzadores.
+El inicio directo mediante `file://` puede estar limitado por los módulos ES; utiliza el servidor si el navegador los bloquea.
 
-## Publicar en GitHub Pages
+## GitHub Pages
 
-El repositorio incluye un flujo de GitHub Actions que ejecuta las pruebas Node.js y publica el contenido estático al hacer push a `main`.
+La web se publica desde **Settings → Pages → Deploy from a branch → main → /(root)**. El flujo automático de GitHub, **pages build and deployment**, publica la web.
 
-1. Crea un repositorio en GitHub y sube el contenido de esta carpeta a la rama `main`.
-2. En el repositorio abre **Settings → Pages** y selecciona **GitHub Actions** como origen de publicación.
-3. Abre **Actions** y comprueba que el flujo **Deploy to GitHub Pages** termina correctamente.
-4. Usa la URL que aparece en el entorno `github-pages` del flujo o en **Settings → Pages**.
-
-Si la rama principal de tu repositorio no se llama `main`, cambia el nombre en `.github/workflows/pages.yml` antes de subirlo. Las rutas a CSS y JavaScript son relativas, por lo que funcionan bajo la subruta habitual de un proyecto en Pages.
+**QA es independiente del despliegue**: el workflow `.github/workflows/pages.yml` comprueba sintaxis, tests de lógica e integración con Chromium, pero no duplica el proceso de publicación. Se puede consultar en la pestaña **Actions**.
 
 ## Pruebas
 
-Requieren Node.js y Python 3. Desde la carpeta del proyecto:
+Con Node.js 22+ y Python 3:
 
 ```bash
-for t in tests/*.mjs; do node "$t" || exit 1; done
+for file in assets/js/*.js; do node --check "$file" || exit 1; done
+for test in tests/*.mjs; do node "$test" || exit 1; done
 python3 -m py_compile servidor.py tests/*.py
-node --check assets/js/museum-os.js
-node --check assets/js/app.js
+python3 tests/repository_integrity.py
 ```
 
-La suite interactiva opcional necesita Playwright y Chromium:
+Pruebas end-to-end opcionales (necesitan Playwright y Chromium):
 
 ```bash
-python3 tests/browser-buttons-v213.py
+python3 -m pip install playwright
+python3 -m playwright install chromium
+python3 tests/browser_http_smoke.py
 ```
 
-El flujo de Actions ejecuta las pruebas lógicas y sintácticas. La prueba de navegador y las pruebas manuales en Windows/Linux se ejecutan aparte.
+Las pruebas de navegador usan HTTP local y comprueban navegación, skins, cuatro épocas, cambios en MuseumOS, restauración y vista móvil.
 
-## Privacidad y seguridad
+## Seguridad y privacidad
 
-- Las amenazas, procesos, archivos, red y ventanas de MuseumOS son datos ficticios en memoria.
-- No contiene muestras, exploits, ejecución de comandos del sistema, conexiones remotas ni envío de correos.
-- Las notas y preferencias no se envían a servidores.
-- El servidor local se limita a `127.0.0.1`; GitHub Pages sirve únicamente los archivos estáticos.
+- Todos los archivos, procesos, alertas, redes y adjuntos del escritorio son representaciones internas.
+- No se accede al sistema de archivos real, no se ejecutan comandos del host ni hay propagación o llamadas externas.
+- El progreso y las preferencias se almacenan localmente en el navegador. No se envían datos a servidores.
+- No es un antivirus ni una máquina virtual ejecutando sistemas operativos reales.
 
 ## Estructura
 
-- `index.html`: punto de entrada.
-- `assets/`: JavaScript y estilos.
-- `tests/`: pruebas lógicas y herramientas de QA.
-- `docs/`: arquitectura y auditorías.
-- `.github/workflows/pages.yml`: pruebas y despliegue de Pages.
-
-Consulta [CHANGELOG.md](CHANGELOG.md) y [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+- `index.html`: entrada para GitHub Pages.
+- `assets/css/styles.css`: estilos y temas.
+- `assets/js/museum-os.js`: escritorio virtual y sus aplicaciones.
+- `assets/js/era-experience.js`: investigaciones.
+- `assets/js/era-incidents.js`: escenas ilustrativas.
+- `assets/js/era-state.js`: estado virtual didáctico.
+- `assets/js/skins.js`: selector de temas.
+- `tests/`: pruebas unitarias, regresión e integración.
+- `docs/`: diseño y auditorías.
 
 ## Licencia
 
-MIT. Consulta [LICENSE](LICENSE).
+MIT, consulta [LICENSE](LICENSE).
