@@ -195,3 +195,11 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 .mos-chassis.mos-dos .mos-taskbar{background:#07240f!important;color:#b6ffbc!important;border-top:2px solid #36b456}
 .mos-chassis.mos-dos .mos-window{filter:sepia(.4) hue-rotate(65deg);border-radius:0!important}
 @media(max-width:750px){.skin-panel{margin:8px 0 12px}.mos-era-control{padding:12px}}
+
+/* v3.0.2 visible skin switcher, always accessible in all viewports */
+#openSkinPanel{border:1px solid var(--lime);color:var(--lime);font-weight:800;white-space:nowrap}
+#skinPanel{position:fixed!important;right:18px;top:74px;left:auto;bottom:auto;margin:0!important;z-index:9999;width:min(280px,calc(100vw - 36px));box-shadow:0 18px 55px #0009;border:2px solid var(--lime);visibility:hidden;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .18s,transform .18s,visibility .18s;background:var(--panel)}
+#skinPanel.skin-open{visibility:visible;opacity:1;transform:none;pointer-events:auto}
+#skinPanel select{min-height:44px}
+#openSkinPanel[aria-expanded="true"]{background:var(--lime);color:var(--bg)}
+@media(max-width:700px){#openSkinPanel{position:fixed;right:12px;bottom:16px;top:auto;z-index:9998;background:var(--panel);box-shadow:0 6px 24px #000a}#skinPanel{top:auto;bottom:73px;right:12px}}
