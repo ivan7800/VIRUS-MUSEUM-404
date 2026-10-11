@@ -1,0 +1,54 @@
+name: QA and Deploy GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax and logical tests
+        run: |
+          set -euo pipefail
+          for file in assets/js/*.js; do node --check "$file"; done
+          for test in tests/*.mjs; do node "$test"; done
+          python3 -m py_compile servidor.py tests/*.py
+          python3 tests/repository_integrity.py
+      - name: Browser smoke tests (Chromium)
+        run: |
+          python3 -m pip install playwright
+          python3 -m playwright install --with-deps chromium
+          python3 tests/browser_http_smoke.py
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Assemble static-only Pages payload
+        run: |
+          mkdir -p site
+          cp index.html LICENSE site/
+          cp -R assets site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+      - id: deployment
+        uses: actions/deploy-pages@v4
