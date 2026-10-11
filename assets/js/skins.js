@@ -45,6 +45,6 @@ export function initSkins(){
   // Keep exterior selector in sync when changing a skin inside MuseumOS settings.
   os.addEventListener('click',()=>queueMicrotask(()=>{
     const current=stored('museumos-theme',eras,'classic');
-    if(era.value!==current)applyEra(current);
+    if(era.value!==current){applyEra(current);era.dispatchEvent(new Event('change',{bubbles:true}));}
   }));
 }
