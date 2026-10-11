@@ -175,3 +175,23 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 
 /* Phase 19: isolated period browser and daily agenda */
 .mos-browser-bar{display:flex;gap:8px;align-items:center;margin-bottom:12px}.mos-browser-address{flex:1;min-width:0;padding:9px;border:1px inset #8e9aab;background:#fff;color:#354b63;font:13px 'Courier New',monospace}.mos-browser-page{min-height:235px;padding:20px;background:linear-gradient(180deg,#fafafa,#e4ebf8);border:2px inset #bac8d5;color:#182d43;line-height:1.65;white-space:pre-line}.mos-browser-page h2{font:700 24px Georgia,serif;color:#1c4b89;border-bottom:2px solid #c0d3ec;padding-bottom:9px}.mos-browser-link{display:block;border:0;background:transparent;text-align:left;color:#204d9c;text-decoration:underline;margin:10px 0;cursor:pointer;font:inherit}.mos-browser-link:hover{color:#b03a60}.mos-calendar-picker{padding:10px;background:white;color:#22364d;border:1px solid #8c99a6}.mos-agenda-editor{display:block;margin:12px 0;width:100%;min-height:125px;resize:vertical;padding:12px;background:#fff;color:#152a43;border:1px inset #9bb0c0;font:14px/1.5 Arial,sans-serif}.mos-calendar-preset{padding:8px;background:rgba(50,90,136,.1);margin-top:12px}.mos-browser-page button:focus-visible,.mos-calendar-picker:focus-visible,.mos-agenda-editor:focus-visible{outline:3px solid #efaa43;outline-offset:2px}
+
+/* v3 - Global visual skins / MuseumOS period profiles */
+.skin-panel{margin:0 8px 20px;padding:13px;border:1px solid var(--edge);border-radius:12px;background:var(--panel)}
+.skin-panel label,.mos-era-control label{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:1.2px;margin-bottom:7px}
+.skin-panel select,.mos-era-control select{display:block;width:100%;min-width:0;border:1px solid var(--edge);border-radius:8px;background:var(--panel2);color:var(--text);padding:9px 12px}
+.mos-era-control{margin:12px 0 14px;padding:14px 18px;border:1px solid var(--edge);border-radius:12px;background:var(--panel)}
+.mos-era-control small{display:block;margin-top:8px;color:var(--muted)}
+:root[data-vm-skin="matrix"]{--bg:#030b06;--panel:#09190e;--panel2:#102719;--edge:#28653c;--muted:#8bba98;--text:#e3ffe6;--lime:#48fa76;--cyan:#6ff9b2;--amber:#b2ff80;--rose:#f788a7;--purple:#93ea9d}
+:root[data-vm-skin="amber"]{--bg:#120d05;--panel:#221a0e;--panel2:#2c2111;--edge:#70502b;--muted:#cfad79;--text:#fff1d3;--lime:#ffbd54;--cyan:#e6b16d;--amber:#ffc15e;--rose:#ff9a70;--purple:#dab179}
+:root[data-vm-skin="ice"]{--bg:#08121d;--panel:#0e2130;--panel2:#152b3b;--edge:#315065;--muted:#91b4c8;--text:#eaf9ff;--lime:#69d9fa;--cyan:#8cf7f5;--amber:#fbd08e;--rose:#f89fba;--purple:#b5b8ff}
+:root[data-vm-skin="noir"]{--bg:#0e0916;--panel:#1b1229;--panel2:#27193b;--edge:#57406e;--muted:#b5a2c8;--text:#faf0ff;--lime:#cb8cff;--cyan:#9bdcf0;--amber:#f4c48e;--rose:#fe91bf;--purple:#d2a4ff}
+:root[data-vm-skin]:not([data-vm-skin="archive"]) .sidebar{background:var(--panel)}
+:root[data-vm-skin]:not([data-vm-skin="archive"]) .nav-link.active{color:var(--lime)}
+.mos-chassis.mos-dos .mos-desktop{background:#030708!important;color:#57f788;font-family:"Courier New",monospace!important}
+.mos-chassis.mos-dos .mos-work{background:#030708!important}
+.mos-chassis.mos-dos .mos-wallpaper{background:repeating-linear-gradient(0deg,#020704,#020704 3px,#061309 4px)!important}
+.mos-chassis.mos-dos .mos-watermark{color:#75fc8e!important;text-shadow:0 0 12px #2ca450}
+.mos-chassis.mos-dos .mos-taskbar{background:#07240f!important;color:#b6ffbc!important;border-top:2px solid #36b456}
+.mos-chassis.mos-dos .mos-window{filter:sepia(.4) hue-rotate(65deg);border-radius:0!important}
+@media(max-width:750px){.skin-panel{margin:8px 0 12px}.mos-era-control{padding:12px}}
