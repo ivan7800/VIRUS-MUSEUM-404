@@ -221,3 +221,12 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 .era-experience[data-era="xp"] .era-terminal{background:#0f2345}.era-experience[data-era="xp"] .era-trace{color:#cee3ff}
 .era-experience[data-era="modern"] .era-terminal{background:#0b1524}.era-experience[data-era="modern"] .era-trace{color:#75eef4}
 @media(prefers-reduced-motion:reduce){.era-experience *{transition:none!important;animation:none!important}}
+
+/* Living History 3.2: investigations live inside the MuseumOS console layout */
+.mos-layout>.era-experience{margin:0;padding:22px;border:1px solid var(--edge);border-radius:0;background:var(--panel)}
+.mos-layout>.era-experience[hidden]{display:none!important}
+#eraLaunch{border:1px solid var(--lime);background:var(--panel2);color:var(--lime);border-radius:7px;padding:8px 14px;font-weight:750;cursor:pointer}
+#eraLaunch:hover,#eraLaunch:focus-visible{background:var(--lime);color:var(--bg)}
+#eraLaunch[aria-expanded="false"]{opacity:.76}
+.era-tabs button:focus-visible,.era-decision:focus-visible,.era-restart:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+@media(max-width:760px){.mos-toolbar{flex-wrap:wrap;gap:8px}.mos-layout>.era-experience{padding:14px}}
