@@ -34,6 +34,9 @@ export function initEraIncidents(){
  const toolbar=work.querySelector('.era-desktop-tools');
  if(toolbar)toolbar.insertAdjacentElement('afterend',panel);else work.prepend(panel);
  era.addEventListener('change',()=>{stop();index=0;update();});
+ document.addEventListener('vm404:era-event',event=>{
+   if(event.detail?.type==='reset'&&event.detail.era===era.value){stop();index=0;update();}
+ });
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();update();}});
  update();
 }
