@@ -230,3 +230,12 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 #eraLaunch[aria-expanded="false"]{opacity:.76}
 .era-tabs button:focus-visible,.era-decision:focus-visible,.era-restart:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
 @media(max-width:760px){.mos-toolbar{flex-wrap:wrap;gap:8px}.mos-layout>.era-experience{padding:14px}}
+
+/* Living History 3.2.1: usable historic tools from the fictional desktop */
+.era-desktop-tools{position:relative;z-index:4;display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:8px 12px;background:#08111cdd;color:#ddf4ff;border-bottom:1px solid #547184;font-size:12px}
+.era-desktop-tools strong{font-size:10px;letter-spacing:1px;margin-right:6px}
+.era-desktop-tools button{background:#24415a;color:#f5fbff;border:1px solid #819bae;border-radius:5px;padding:6px 9px;cursor:pointer;font-size:12px}
+.era-desktop-tools button:hover{background:#396181}.era-desktop-tools button:focus-visible{outline:3px solid #e8ff8a;outline-offset:2px}
+.mos-dos .era-desktop-tools{background:#041307;color:#76ff93;border-color:#287744}
+.mos-dos .era-desktop-tools button{background:#103a1a;color:#aeffb9;border-color:#45b45a}
+@media(max-width:600px){.era-desktop-tools strong{width:100%}.era-desktop-tools button{flex:1;min-width:90px}}
