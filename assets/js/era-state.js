@@ -43,7 +43,11 @@ export function initEraState(){
   const d=e.detail||{};if(d.era!==era.value||!['step','decision','reset'].includes(d.type))return;
   stateByEra.set(d.era,reduceEraState(state(),d));render();
  });
- era.addEventListener('change',render);
+ era.addEventListener('change',()=>{
+   stateByEra.set(era.value,initialEraState());
+   render();
+   document.dispatchEvent(new CustomEvent('vm404:era-event',{detail:{type:'reset',era:era.value}}));
+ });
  reset.addEventListener('click',()=>{document.dispatchEvent(new CustomEvent('vm404:era-event',{detail:{type:'reset',era:era.value}}));});
  render();
 }
