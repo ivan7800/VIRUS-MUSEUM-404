@@ -55,6 +55,20 @@ export function initEraExperience(){
   const foot=elem('p','era-disclaimer','SIMULACIÓN EDUCATIVA · DATOS, ARCHIVOS Y RED TOTALMENTE FICTICIOS');
   root.append(head,badge,terminal,step,actions,result,restart,foot);
  }
+ const desktop=document.getElementById('museumOS');
+ desktop?.addEventListener('click',event=>{
+   const evidenceButton=event.target.closest('[data-era-open]');
+   const caseButton=event.target.closest('[data-era-investigate]');
+   if(!evidenceButton&&!caseButton)return;
+   root.hidden=false;
+   if(launch)launch.setAttribute('aria-expanded','true');
+   if(evidenceButton){
+     const i=Number(evidenceButton.dataset.eraOpen);
+     const clue=root.querySelectorAll('.era-tab')[i];
+     clue?.click();
+   }
+   root.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ });
  selector.addEventListener('change',()=>{render();root.hidden=false;if(launch)launch.setAttribute('aria-expanded','true');});
  render();
 }
