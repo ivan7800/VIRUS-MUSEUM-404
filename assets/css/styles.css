@@ -253,3 +253,13 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 .mos-dos .era-incident-screen{background:#010803;color:#77fa83;border-color:#256e3b}
 .mos-dos .era-incident-controls button{background:#0b2e15;color:#93f6a1;border-color:#387a42}
 @media(max-width:600px){.era-incident-controls button{flex:1 1 40%}}
+
+/* 3.4 - sandbox-only incident state */
+.era-state-panel{position:relative;z-index:3;background:#0b1621;color:#dcefff;padding:14px 16px;border-block:1px solid #3d596d;display:grid;gap:10px}
+.era-state-panel>strong{font:700 12px 'Courier New',monospace;letter-spacing:1px}
+.era-state-panel dl{display:grid;grid-template-columns:minmax(80px,130px) minmax(0,1fr);margin:0;gap:6px 12px}
+.era-state-panel dt{color:#80c2e5;font-size:11px}.era-state-panel dd{margin:0;font-size:12px;overflow-wrap:anywhere}
+.era-state-panel button{justify-self:start;padding:8px 12px;border:1px solid #5a859b;border-radius:6px;background:#19354b;color:#eaffff}
+.era-state-log{margin:0;color:#9bd9b0;font:12px 'Courier New',monospace}
+.mos-dos .era-state-panel{background:#031208;color:#89ff99;border-color:#26743e}
+.mos-dos .era-state-panel dt{color:#6ed987}
