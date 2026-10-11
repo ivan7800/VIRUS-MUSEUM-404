@@ -29,8 +29,10 @@ export function initEraState(){
  log.className='era-state-log';log.setAttribute('role','status');log.setAttribute('aria-live','polite');
  reset.type='button';reset.textContent='↺ Restaurar escenario virtual';
  wrapper.append(heading,entries,log,reset);
- const console=work.querySelector('.era-incident-console');
- if(console)console.insertAdjacentElement('afterend',wrapper);else work.prepend(wrapper);
+ const drawer=work.querySelector('#eraMonitorDrawer'),console=work.querySelector('.era-incident-console');
+ if(console)console.insertAdjacentElement('afterend',wrapper);
+ else if(drawer)drawer.append(wrapper);
+ else work.prepend(wrapper);
  const state=()=>stateByEra.get(era.value)||initialEraState();
  function render(){
   const s=state();entries.replaceChildren();
