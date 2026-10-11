@@ -1,3 +1,12 @@
+## 3.5.0 — Living History / MuseumOS
+
+- Incident-scene decisions reflected in the virtual Files, Tasks, Events, NetWatch and Security apps.
+- Historical report (read-only), fictional process and simulated event log.
+- Collapsible incident drawer, scoped visual styles and reset synchronization.
+- Period change, scene replay and reset consistency.
+- Updated Chromium end-to-end checks; QA separated from native Pages publication.
+- Documentation clarified for branch-based GitHub Pages.
+
 # Changelog
 
 ## 2.1.3 — 2026-10-11
