@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';
+import {SimulationEngine,scenarios} from '../assets/js/engine.js';
+let now=0,ids=0;const pending=new Map();const clock={now:()=>now,schedule:(fn,delay)=>{const id=++ids;pending.set(id,{at:now+delay,fn});return id;},cancel:id=>pending.delete(id)};
+function advance(ms){const until=now+ms;for(;;){const due=[...pending.entries()].filter(([,t])=>t.at<=until).sort((a,b)=>a[1].at-b[1].at)[0];if(!due)break;now=due[1].at;pending.delete(due[0]);due[1].fn();}now=until;}
+for(const s of scenarios){now=0;pending.clear();const e=new SimulationEngine(()=>{},clock);e.load(s.id);assert.equal(e.snapshot().total,6);e.start();advance(2300);assert.equal(e.snapshot().cursor,3);e.pause();const paused=e.snapshot();advance(30000);assert.deepEqual(e.snapshot(),paused,'pause congeló estado');e.resume();advance(8000);assert.equal(e.snapshot().status,'completed');assert.equal(e.snapshot().cursor,6);assert.equal(e.snapshot().virtual.documents,'disponibles');e.reset();assert.equal(e.snapshot().status,'idle');assert.equal(pending.size,0);}
+const e=new SimulationEngine(()=>{},clock);assert.throws(()=>e.load('not-a-scenario'));assert.throws(()=>e.start());console.log('OK: escenarios, cronología, pausa, reanudación, reinicio, final y seguridad de IDs.');

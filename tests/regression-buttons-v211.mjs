@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const js=readFileSync(new URL('../assets/js/museum-os.js',import.meta.url),'utf8');
+assert.match(html,/id="mosReset"/);
+assert.match(js,/document\.getElementById\('mosReset'\)\.addEventListener/,'Restaurar debe buscarse fuera de #museumOS');
+assert.match(js,/document\.getElementById\('mosStatus'\)/,'Barra de estado pertenece a contenedor exterior');
+assert.match(js,/document\.querySelectorAll\('\[data-mos-incident\]'\)/,'Incidentes exteriores deben registrar listeners');
+assert.doesNotMatch(js,/root\.querySelector\('#mosReset'\)/);
+assert.doesNotMatch(js,/root\.querySelector\('#mosStatus'\)/);
+assert.doesNotMatch(js,/root\.querySelectorAll\('\[data-mos-incident\]'\)/);
+assert.doesNotMatch(js,/root\.querySelector\('#mosOff'\)\.addEventListener/,'No registrar dos veces encendido por propagación');
+console.log('OK: regresiones de selectores y eventos de MuseumOS');

@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const js=readFileSync(new URL('../assets/js/museum-os.js',import.meta.url),'utf8');
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const css=readFileSync(new URL('../assets/css/styles.css',import.meta.url),'utf8');
+for(const marker of ['data-mos-app="backup"','id="mosUptime"'])assert.ok(html.includes(marker),marker);
+for(const snippet of ['activityTimer=setInterval','clearInterval(activityTimer)','case','if(type===\'backup\')','backup={files:{...files},trash:{...trash}','const retainedBackup=backup;reset();backup=retainedBackup','search.type=\'search\'','mailRead.add(m.subject)','e.ctrlKey&&e.altKey'])assert.ok(js.includes(snippet),snippet);
+assert.ok(css.includes('.mos-search')&&css.includes('.mos-uptime'));
+assert.ok(!/\bfetch\s*\(|\bWebSocket\b|\beval\s*\(/.test(js));
+console.log('DESKTOP PLUS PASS: backup retained, search, running task monitor, shortcuts, no remote access');

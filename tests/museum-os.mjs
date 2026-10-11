@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const js=fs.readFileSync(new URL('../assets/js/museum-os.js',import.meta.url),'utf8');
+const app=fs.readFileSync(new URL('../assets/js/app.js',import.meta.url),'utf8');
+for (const id of ['museumOS','mosPower','mosOff','mosContinue','mosEnter','mosWork','mosWindows','mosTaskApps','mosStartMenu','mosShutdown','mosReset','mosClock','mosThreat','mosStatus','mosIncidentBanner','mosStart','mosBoot','mosLogin','mosBootLog','mosDesktop','mosNotification']) assert.ok(html.includes(`id="${id}"`),`Missing UI element ${id}`);
+for(const appType of ['files','terminal','tasks','mail','network','events','security','about'])assert.match(js,new RegExp(`${appType}:\\[`));
+for(const id of ['cascade','iloveyou','blaster','wannacry'])assert.ok(html.includes(`data-mos-incident="${id}"`));
+assert.ok(app.includes('initMuseumOS()'));
+assert.ok(!/fetch\s*\(|WebSocket|eval\s*\(|new Function\s*\(/.test(js));
+console.log('MuseumOS: DOM refs, app catalog, incidents and isolation: PASS');

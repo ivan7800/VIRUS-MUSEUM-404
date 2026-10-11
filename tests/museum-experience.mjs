@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const js=fs.readFileSync(new URL('../assets/js/museum-os.js',import.meta.url),'utf8');
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const css=fs.readFileSync(new URL('../assets/css/styles.css',import.meta.url),'utf8');
+for(const marker of ['id="mosTimeline"','id="mosWindows"','id="mosStartMenu"'])assert.ok(html.includes(marker));
+for(const fn of ['stopTimeline','advanceIncident','renderTimeline','renderIncident','runIncident'])assert.ok(js.includes(`function ${fn}(`));
+for(const incident of ['cascade','iloveyou','blaster','wannacry'])assert.match(js,new RegExp(incident+':\\{name:'));
+assert.match(js,/setInterval\(\(\)=>\{if\(!incidentPaused&&!caseResolved\)advanceIncident\(\);\},6500\)/);
+assert.match(js,/if\(incidentStep===data.steps.length\)stopTimeline\(\)/);
+assert.match(js,/function shutdown\(\)\{startMenu.hidden=true;stopTimeline\(\)/);
+assert.match(js,/function seed\(\)\{caseActions=\[\];caseEvidence=new Set\(\);/);
+assert.match(js,/files\[path\]=editor.value/);
+assert.ok(css.includes('.mos-editor')&&css.includes('.mos-timeline'));
+assert.ok(!/fetch\s*\(|WebSocket|eval\s*\(|new Function\s*\(/.test(js));
+console.log('MuseumOS Experience: etapas, ciclo de vida, editor, interfaz, aislamiento: PASS');

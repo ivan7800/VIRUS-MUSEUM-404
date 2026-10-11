@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const src=readFileSync(new URL('../assets/js/museum-os.js',import.meta.url),'utf8');
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const css=readFileSync(new URL('../assets/css/styles.css',import.meta.url),'utf8');
+for(const id of ['mosDialogLayer','mosDiagnostic'])assert.ok(html.includes(`id="${id}"`),id);
+for(const text of ['function systemDialog(',"systemDialog('Error de servicio RPC'","systemDialog('Documentos bloqueados'","systemDialog('Archivo modificado'",'function reset(){seed();clearEffects();','function shutdown(){startMenu.hidden=true;stopTimeline();clearEffects();','function powerOn(){seed();clearEffects();','audioEnabled=false','audioEnabled=!audioEnabled'])assert.ok(src.includes(text),text);
+assert.ok(css.includes('.mos-system-dialog'));
+assert.ok(css.includes('prefers-reduced-motion'));
+assert.ok(!src.includes('fetch(') && !src.includes('eval('));
+console.log('EXPERIENCE V1.3 PASS: dialogs, lifecycle, audio opt-in, diagnostics and isolation');
