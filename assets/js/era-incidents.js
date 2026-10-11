@@ -25,7 +25,7 @@ export function initEraIncidents(){
    play.disabled=running||index>=scene.steps.length-1;
    pause.disabled=!running;next.disabled=running||index>=scene.steps.length-1;
  };
- const advance=()=>{if(index<get().steps.length-1){index++;update();}else{stop();update();}};
+ const advance=()=>{if(index<get().steps.length-1){index++;document.dispatchEvent(new CustomEvent('vm404:era-event',{detail:{type:'step',era:era.value,index}}));update();}else{stop();update();}};
  const play=mk('▶ Reproducir',()=>{if(running||index>=get().steps.length-1)return;running=true;update();timer=setInterval(()=>{advance();if(index>=get().steps.length-1){stop();update();}},1900);});
  const pause=mk('Ⅱ Pausar',()=>{stop();update();});
  const next=mk('→ Paso siguiente',advance);
