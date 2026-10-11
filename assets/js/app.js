@@ -1,6 +1,7 @@
 import {initMuseumOS} from './museum-os.js';
 import {initEraExperience} from './era-experience.js';
 import {initEraIncidents} from './era-incidents.js';
+import {initEraState} from './era-state.js';
 import {initSkins} from './skins.js';
 import {SimulationEngine,scenarios} from './engine.js';
 import {renderScenarioVisual} from './visuals.js';
@@ -34,3 +35,4 @@ init();
 initSkins();
 initEraExperience();
 initEraIncidents();
+initEraState();
