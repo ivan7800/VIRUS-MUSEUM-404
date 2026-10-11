@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {initialEraState,reduceEraState} from '../assets/js/era-state.js';
+const clean=initialEraState();
+assert.equal(clean.phase,'idle');
+const active=reduceEraState(clean,{type:'step',era:'modern',index:2});
+assert.equal(active.files,'Archivos ficticios bloqueados');
+assert.equal(clean.files,'Íntegros','Reducer must be immutable');
+const safe=reduceEraState(active,{type:'decision',era:'modern',correct:true});
+assert.equal(safe.phase,'Contenida');
+assert.equal(safe.alerts,'Controlada');
+const risky=reduceEraState(active,{type:'decision',era:'modern',correct:false});
+assert.equal(risky.phase,'Requiere revisión');
+assert.equal(reduceEraState(risky,{type:'reset'}).phase,'idle');
+console.log('PASS fictional incident state transition / reset');
