@@ -263,3 +263,15 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 .era-state-log{margin:0;color:#9bd9b0;font:12px 'Courier New',monospace}
 .mos-dos .era-state-panel{background:#031208;color:#89ff99;border-color:#26743e}
 .mos-dos .era-state-panel dt{color:#6ed987}
+
+/* Living History 3.5 — dock + scrollable incident drawer without blocking the desktop */
+#mosWork .era-desktop-tools{position:absolute;top:8px;right:8px;left:auto;bottom:auto;width:min(435px,calc(100% - 126px));max-height:88px;overflow-y:auto;z-index:11;background:#0b1d2ff2;border:1px solid #60869b;border-radius:9px;padding:7px;box-shadow:0 6px 18px #0008}
+#mosWork .era-desktop-tools button{font-size:11px;min-width:auto;flex:1 1 27%}
+#mosWork .era-monitor-drawer{position:absolute;top:101px;right:8px;bottom:50px;left:auto;width:min(435px,calc(100% - 126px));overflow:auto;z-index:11;background:#08121cf4;border:1px solid #628398;border-radius:8px;box-shadow:0 10px 30px #000a}
+#mosWork .era-monitor-drawer[hidden]{display:none!important}
+#mosWork .era-monitor-drawer .era-incident-console,#mosWork .era-monitor-drawer .era-state-panel{position:relative;inset:auto;border-radius:0;box-shadow:none}
+#mosWork .era-monitor-drawer .era-incident-console{padding:10px;gap:7px}
+#mosWork .era-monitor-drawer .era-state-panel{padding:10px}
+#mosWork .era-monitor-drawer .era-incident-controls button{flex:1 1 40%}
+#mosWork .era-desktop-tools button:focus-visible,#eraPanelToggle:focus-visible{outline:3px solid #e8ff95;outline-offset:2px}
+@media(max-width:620px){#mosWork .era-desktop-tools{width:calc(100% - 108px);right:5px;top:5px;max-height:105px}#mosWork .era-monitor-drawer{width:calc(100% - 108px);right:5px;top:116px;bottom:50px}}

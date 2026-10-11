@@ -17,6 +17,8 @@ const safe=(s)=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const apps={cases:['🗂','Expedientes del museo'],files:['📁','Explorador de archivos'],notepad:['📝','Bloc de notas'],terminal:['⌨','Terminal'],tasks:['▤','Administrador de tareas'],mail:['✉','Correo 404'],network:['◎','NetWatch'],events:['≡','Visor de eventos'],security:['◈','Centro de seguridad'],trash:['🗑','Papelera de reciclaje'],settings:['⚙','Panel de control'],about:['ⓘ','Acerca del sistema'],incident:['⚠','Informe de incidente'],backup:['💾','Copias de seguridad'],browser:['🌐','Museum Navigator'],calendar:['📅','Agenda y calendario']};
 export function initMuseumOS(){
  const root=document.getElementById('museumOS');if(!root)return;
+ const historyFile='C:/Users/Operator/Documents/INCIDENTE-HISTORICO-404.txt';
+ let historical=null;
  let trash={},incidentTimer=null,incidentStep=0,incidentPaused=false,incidentTrail=[],state='off',files=initialFiles(),processes=[],events=[],windowCount=0,top=20,selectedPath='C:/Users/Operator/Documents',infected=false,quarantined=false,locked=false,networkIsolated=false,scenario='none';
  let audioEnabled=false, audioContext=null, alertCount=0, backup=null, activityTimer=null, uptime=0, mailRead=new Set();let inboxMail=starterMail.map(m=>({...m})),deliveredEvents=new Set(),incidentDecision='';
  let caseActions=[],caseOpenedAt=0,caseOutcome=null,caseEvidence=new Set(),caseResolved=false,lastCaseOutcome=null;
@@ -29,7 +31,7 @@ export function initMuseumOS(){
  const log=(message)=>{events.unshift({time:new Date().toLocaleTimeString('es-ES'),message});events=events.slice(0,100);};
  const announce=(msg)=>{notification.textContent=msg;notification.hidden=false;document.getElementById('mosStatus').textContent=msg.slice(0,52);};
  function deliverEvent(key){if(deliveredEvents.has(key)||state!=='work')return;deliveredEvents.add(key);if(key==='mail'){inboxMail.unshift({from:'contacto@museum.local',subject:'Mensaje nuevo: una carta para ti',body:'¡Hola! Encontré una carta curiosa. Adjunto: LOVE-LETTER-FOR-YOU.TXT.vbs. Puedes revisarla sin ejecutar nada.',suspect:true});log('Correo ficticio recibido: nueva carta');announce('✉ Correo 404: tienes un mensaje nuevo. Puedes inspeccionarlo antes de abrirlo.');refresh('mail');}else if(key==='warning'){log('Actividad simulada de red: comprobación de servicios pendiente');announce('◎ NetWatch: aviso preventivo. Comprueba el estado de la red ficticia.');refresh('events');}}
- function seed(){caseActions=[];caseEvidence=new Set();caseOutcome=null;caseResolved=false;caseOpenedAt=0;trash={};stopTimeline();backup=null;mailRead=new Set();mailDrafts=[];inboxMail=starterMail.map(m=>({...m}));deliveredEvents=new Set();incidentDecision='';dailyEventShown=false;uptime=0;incidentStep=0;incidentTrail=[];files=initialFiles();processes=[{pid:100,name:'system.ui',cpu:2,risk:false},{pid:120,name:'explorer.ui',cpu:1,risk:false},{pid:141,name:'mail.service',cpu:0,risk:false}];events=[];infected=quarantined=locked=networkIsolated=false;scenario='none';log('Sistema virtual iniciado');}
+ function seed(){caseActions=[];caseEvidence=new Set();caseOutcome=null;caseResolved=false;caseOpenedAt=0;trash={};stopTimeline();backup=null;mailRead=new Set();mailDrafts=[];inboxMail=starterMail.map(m=>({...m}));deliveredEvents=new Set();incidentDecision='';dailyEventShown=false;uptime=0;incidentStep=0;incidentTrail=[];files=initialFiles();processes=[{pid:100,name:'system.ui',cpu:2,risk:false},{pid:120,name:'explorer.ui',cpu:1,risk:false},{pid:141,name:'mail.service',cpu:0,risk:false}];events=[];infected=quarantined=locked=networkIsolated=false;scenario='none';historical=null;log('Sistema virtual iniciado');document.dispatchEvent(new CustomEvent('vm404:era-event',{detail:{type:'reset',era:document.getElementById('mosEra')?.value}}));}
  const view=(name)=>{boot.hidden=name!=='boot';login.hidden=name!=='login';work.hidden=name!=='work';root.querySelector('#mosOff').hidden=name!=='off';state=name;};
  function powerOn(){seed();clearEffects();beep('boot');renderTimeline();setBanner('LABORATORIO AISLADO · SIN MALWARE');view('boot');root.querySelector('#mosBootLog').textContent='MUSEUM BIOS 404\nRAM TEST: 640 KB ........ OK\nVIRTUAL DISK ........... OK\nKERNEL: MUSEUMOS 1.0 ... OK\nSECURE SIMULATION ...... ENABLED';root.querySelector('#mosContinue').focus();}
  function goLogin(){view('login');root.querySelector('#mosEnter').focus();}
@@ -44,6 +46,9 @@ export function initMuseumOS(){
  winLayer.append(windowEl);renderWindow(windowEl);windowEl.querySelector('button')?.focus();}
  const container=(win)=>win.querySelector('.mos-content');
  function renderWindow(win){const type=win.dataset.app,body=container(win);body.replaceChildren();
+ if(historical&&['files','tasks','network','events','security'].includes(type)){
+  body.append(make('aside','mos-history-status',`LIVING HISTORY · ${historical.era.toUpperCase()} · ${historical.phase} · ${historical.summary}`));
+ }
  if(type==='notepad'){
    body.append(make('p','mos-muted','BLOC DE NOTAS · Solo archivos virtuales. Los cambios se guardan en la sesión actual.'));
    const bar=make('div','mos-notepad-bar'),picker=make('select');picker.setAttribute('aria-label','Documento virtual');
@@ -51,7 +56,7 @@ export function initMuseumOS(){
    if(!paths.includes(notepadPath))notepadPath=paths[0]||'';
    for(const path of paths){const opt=make('option','',path.replace('C:/Users/Operator/',''));opt.value=path;picker.append(opt);}
    picker.value=notepadPath;picker.addEventListener('change',()=>{notepadPath=picker.value;renderWindow(win);});bar.append(picker);
-   const editor=make('textarea','mos-notepad-editor');editor.value=files[notepadPath]??'';editor.disabled=!notepadPath||(locked&&notepadPath.includes('/Documents/'));editor.setAttribute('aria-label','Editor de documento virtual');
+   const editor=make('textarea','mos-notepad-editor');editor.value=files[notepadPath]??'';editor.disabled=!notepadPath||(locked&&notepadPath.includes('/Documents/'))||notepadPath===historyFile;editor.setAttribute('aria-label','Editor de documento virtual');
    const save=make('button','mos-action','💾 Guardar');save.disabled=editor.disabled;save.addEventListener('click',()=>{files[notepadPath]=editor.value;log('Bloc de notas guardó '+notepadPath);announce('Documento ficticio guardado');refresh('files');});bar.append(save);
    const openFolder=make('button','mos-action','📁 Ver carpeta');openFolder.addEventListener('click',()=>{selectedPath=notepadPath.split('/').slice(0,-1).join('/');openApp('files');});bar.append(openFolder);
    body.append(bar,editor);if(editor.disabled)body.append(make('p','mos-muted','Documento bloqueado por la simulación o no disponible.'));
@@ -102,7 +107,33 @@ export function initMuseumOS(){
  else if(type==='incident'){renderIncident(body);}
  else if(type==='about'){body.append(make('h3','','MuseumOS 404'));body.append(make('p','','Sistema operativo ficticio dentro de VIRUS MUSEUM 404. No es una máquina virtual real: archivos, procesos y red solo existen en memoria de esta página.'));}
  }
- function refresh(type){const diagnostic=root.querySelector('#mosDiagnostic');if(diagnostic)diagnostic.textContent=infected?`RIESGO DETECTADO · ${processes.length} PROCESOS · ${Object.keys(files).length} ARCHIVOS`: `SISTEMA ${quarantined?'EN CUARENTENA':'OPERATIVO'} · ${processes.length} PROCESOS · ${Object.keys(files).length} ARCHIVOS`;for(const w of [...winLayer.children])if((!type||w.dataset.app===type)&&!(type===undefined&&['terminal','calendar','browser'].includes(w.dataset.app)))renderWindow(w);document.getElementById('mosThreat').textContent=infected?'⚠ INCIDENTE FICTICIO':quarantined?'✓ CUARENTENA':'✓ SISTEMA LIMPIO';}
+ function applyHistoricalEvent(detail){
+  const era=document.getElementById('mosEra')?.value;
+  if(!detail||detail.era!==era||!['step','decision','reset'].includes(detail.type))return;
+  processes=processes.filter(p=>p.pid!==4404);
+  if(detail.type==='reset'){
+   historical=null;delete files[historyFile];
+   log('Living History: escenario virtual restaurado');
+   refresh();return;
+  }
+  const success=detail.type==='decision'&&detail.correct===true;
+  const risky=detail.type==='decision'&&!detail.correct;
+  const anomaly=detail.type==='step'&&detail.index>=1;
+  const phase=success?'Contenida':risky?'Requiere revisión':'En observación';
+  const network=success?'Aislada':risky?'Exposición simulada':detail.era==='dos'?'Sin red':'Tráfico simulado supervisado';
+  const fileState=success?'Protegidos':risky?'Posible afectación ficticia':anomaly?(detail.era==='modern'&&detail.index>=2?'Archivos virtuales bloqueados':'Inspección recomendada'):'Íntegros';
+  const summary=success?'Respuesta defensiva aplicada':risky?'Revisar la decisión':'Investigación de época en curso';
+  historical={era:detail.era,phase,network,fileState,summary};
+  if(anomaly||risky)processes.push({pid:4404,name:'history.'+detail.era+'.demo',cpu:0,risk:false});
+  files[historyFile]=['VIRUS MUSEUM 404 · INFORME DIDÁCTICO',
+   'Época: '+detail.era,'Fase: '+phase,'Archivos: '+fileState,
+   'Red: '+network,'Evaluación: '+summary,
+   'Todos los cambios son virtuales. No hay muestras de malware.'].join('\n');
+  log('Living History '+detail.era+': '+phase+' · '+summary);
+  refresh();
+ }
+ document.addEventListener('vm404:era-event',event=>applyHistoricalEvent(event.detail));
+ function refresh(type){const diagnostic=root.querySelector('#mosDiagnostic');if(diagnostic)diagnostic.textContent=infected?`RIESGO DETECTADO · ${processes.length} PROCESOS · ${Object.keys(files).length} ARCHIVOS`: `SISTEMA ${quarantined?'EN CUARENTENA':'OPERATIVO'} · ${processes.length} PROCESOS · ${Object.keys(files).length} ARCHIVOS`;for(const w of [...winLayer.children])if((!type||w.dataset.app===type)&&!(type===undefined&&['terminal','calendar','browser'].includes(w.dataset.app)))renderWindow(w);document.getElementById('mosThreat').textContent=infected?'⚠ INCIDENTE FICTICIO':historical?(historical.phase==='Contenida'?'✓ CASO HISTÓRICO CONTENIDO':'⚠ CASO HISTÓRICO EN CURSO'):quarantined?'✓ CUARENTENA':'✓ SISTEMA LIMPIO';}
  const incidents={
  cascade:{name:'Cascade · 1988',process:'cascade.com',steps:[['Acceso a un programa DOS ficticio','Aparece un proceso nuevo en el administrador de tareas.'],['Alteración visual','La pantalla muestra caracteres desplazados y parpadeos controlados.'],['Inspección','Comprueba procesos y consulta el visor de sucesos.'],['Contención','Finaliza el proceso o utiliza Seguridad para restaurar el estado.']]},
  iloveyou:{name:'ILOVEYOU · 2000',process:'loveletter.vbs',steps:[['Mensaje sospechoso','En Mail 404 aparece un adjunto con una extensión engañosa.'],['Archivo abierto (simulación)','El sistema registra una actividad anómala en documentos ficticios.'],['Cambios en documentos','Se modifica el contenido de recuerdos.txt dentro de MuseumOS.'],['Respuesta defensiva','Inspecciona el explorador y pon en cuarentena el artefacto virtual.']]},

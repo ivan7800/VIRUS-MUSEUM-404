@@ -48,7 +48,7 @@ export function initEraExperience(){
    });
   }
   const restart=elem('button','era-restart','↺ Reiniciar investigación');restart.hidden=true;
-  restart.addEventListener('click',()=>{choice=-1;inspected=new Set();renderReset();});
+  restart.addEventListener('click',()=>{choice=-1;inspected=new Set();document.dispatchEvent(new CustomEvent('vm404:era-event',{detail:{type:'reset',era:id}}));renderReset();});
   const badge=elem('p','era-progress');
   function refreshStatus(){badge.textContent='EXPEDIENTES COMPLETADOS: '+Object.keys(progress()).filter(k=>eraCases[k]&&progress()[k]).length+'/4';}
   function renderReset(){current='';render();}
