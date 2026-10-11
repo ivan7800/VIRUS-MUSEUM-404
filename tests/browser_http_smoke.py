@@ -33,6 +33,8 @@ try:
         expect(page.locator("#mosWork")).to_be_visible()
         page.locator("#mosEra").select_option("modern")
         expect(page.locator("#eraExperience")).to_contain_text("2017")
+        page.locator("#eraPanelToggle").click()
+        expect(page.locator("#eraMonitorDrawer")).to_be_visible()
         next_button = page.locator(".era-incident-console .era-incident-controls button").nth(2)
         next_button.click()
         next_button.click()
