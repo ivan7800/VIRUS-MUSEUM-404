@@ -275,3 +275,7 @@ body.museum-immersive .mos-icons{grid-template-columns:repeat(2,83px);max-height
 #mosWork .era-monitor-drawer .era-incident-controls button{flex:1 1 40%}
 #mosWork .era-desktop-tools button:focus-visible,#eraPanelToggle:focus-visible{outline:3px solid #e8ff95;outline-offset:2px}
 @media(max-width:620px){#mosWork .era-desktop-tools{width:calc(100% - 108px);right:5px;top:5px;max-height:105px}#mosWork .era-monitor-drawer{width:calc(100% - 108px);right:5px;top:116px;bottom:50px}}
+
+/* Shared historical evidence chip inside MuseumOS applications */
+.mos-window .mos-history-status{display:block;margin:0 0 12px;padding:10px 12px;border-left:4px solid #27759c;border-radius:5px;background:#e3f3f8;color:#183548;font:700 12px/1.5 Tahoma,Arial,sans-serif;overflow-wrap:anywhere}
+.mos-window .mos-history-status::first-letter{font-weight:900}
