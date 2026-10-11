@@ -1,5 +1,6 @@
 import {initMuseumOS} from './museum-os.js';
 import {initEraExperience} from './era-experience.js';
+import {initEraIncidents} from './era-incidents.js';
 import {initSkins} from './skins.js';
 import {SimulationEngine,scenarios} from './engine.js';
 import {renderScenarioVisual} from './visuals.js';
@@ -32,3 +33,4 @@ function setFx(){document.body.classList.toggle('reduce-fx',reducedFX);$('#motio
 init();
 initSkins();
 initEraExperience();
+initEraIncidents();
