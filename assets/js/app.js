@@ -1,4 +1,5 @@
 import {initMuseumOS} from './museum-os.js';
+import {initSkins} from './skins.js';
 import {SimulationEngine,scenarios} from './engine.js';
 import {renderScenarioVisual} from './visuals.js';
 import {initVirtual} from './virtual.js';
@@ -28,3 +29,4 @@ $('#soundToggle').setAttribute('aria-pressed',String(audioEnabled));$('#soundLab
 $('#soundToggle').addEventListener('click',()=>{audioEnabled=!audioEnabled;prefSet('sound',audioEnabled);$('#soundToggle').setAttribute('aria-pressed',String(audioEnabled));$('#soundLabel').textContent=audioEnabled?'ON':'OFF';beep();});
 function setFx(){document.body.classList.toggle('reduce-fx',reducedFX);$('#motionToggle').setAttribute('aria-pressed',String(reducedFX));$('#motionToggle').textContent=reducedFX?'◈ FX OFF':'◈ FX';document.documentElement.style.scrollBehavior=reducedFX?'auto':'';}setFx();$('#motionToggle').addEventListener('click',()=>{reducedFX=!reducedFX;prefSet('reducedFx',reducedFX);setFx();if(engine)renderEngine(engine.snapshot());beep();});const tick=()=>{$('#clock').textContent=new Date().toLocaleTimeString('es-ES',{hour12:false});};tick();setInterval(tick,1000);}
 init();
+initSkins();
