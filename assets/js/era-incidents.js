@@ -31,8 +31,14 @@ export function initEraIncidents(){
  const next=mk('→ Paso siguiente',advance);
  mk('↺ Reiniciar',()=>{stop();index=0;update();});
  panel.append(heading,display,status,controls);
- const toolbar=work.querySelector('.era-desktop-tools');
- if(toolbar)toolbar.insertAdjacentElement('afterend',panel);else work.prepend(panel);
+ const drawer=work.querySelector('#eraMonitorDrawer'),toggle=work.querySelector('#eraPanelToggle');
+ if(drawer)drawer.append(panel);else work.prepend(panel);
+ if(drawer&&toggle){
+   toggle.addEventListener('click',()=>{
+     drawer.hidden=!drawer.hidden;
+     toggle.setAttribute('aria-expanded',String(!drawer.hidden));
+   });
+ }
  era.addEventListener('change',()=>{stop();index=0;update();});
  document.addEventListener('vm404:era-event',event=>{
    if(event.detail?.type==='reset'&&event.detail.era===era.value){stop();index=0;update();}
