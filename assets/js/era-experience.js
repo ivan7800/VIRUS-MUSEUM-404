@@ -39,6 +39,7 @@ export function initEraExperience(){
     button.type='button';button.disabled=inspected.size<3||choice!==-1;
     button.addEventListener('click',()=>{
      choice=idx;const passed=ok===true;
+     document.dispatchEvent(new CustomEvent('vm404:era-event',{detail:{type:'decision',era:id,correct:passed}}));
      result.textContent=(passed?'✓ INVESTIGACIÓN RESUELTA — ':'⚠ RESPUESTA MEJORABLE — ')+feedback;
      result.dataset.outcome=passed?'pass':'retry';
      if(passed){const p=progress();p[id]=true;save(p);}
